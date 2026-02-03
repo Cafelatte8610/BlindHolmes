@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.cysharp.r3": "1.3.0",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.burst": "1.8.27",
@@ -23,6 +24,9 @@
     "com.unity.timeline": "1.8.10",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.9",
+    "jp.hadashikick.vcontainer": "1.17.0",
+    "org.nuget.observablecollections.r3": "3.3.4",
+    "org.nuget.r3": "1.3.0",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
@@ -67,6 +71,13 @@
       "scopes": [
         "org.nuget",
         "com.cysharp"
+      ]
+    },
+    {
+      "name": "VContainer",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "jp.hadashikick.vcontainer"
       ]
     }
   ]
