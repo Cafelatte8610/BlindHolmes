@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class GeminiChat : MonoBehaviour
 {
     [Header("API Settings")]
-    [SerializeField] private string apiKey = "AIzaSyAjhbtEL5U7arwLauV9Tqg9j8rY48buFe0";
+    [SerializeField] private string apiKey = "APIKey";
     private string apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";    void Start()
     {
         // テスト送信（ゲーム開始時に挨拶してみる）
