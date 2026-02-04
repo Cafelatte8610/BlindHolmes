@@ -1,16 +1,22 @@
 using System;
 
-// --- リクエスト用 (Unity -> Gemini) ---
 [Serializable]
 public class GeminiRequest
 {
+    public SystemInstruction system_instruction; // 追加: キャラ設定・容疑者情報用
     public Content[] contents;
+}
+
+[Serializable]
+public class SystemInstruction
+{
+    public Part[] parts;
 }
 
 [Serializable]
 public class Content
 {
-    public string role; // "user" または "model"
+    public string role;
     public Part[] parts;
 }
 
@@ -20,7 +26,6 @@ public class Part
     public string text;
 }
 
-// --- レスポンス用 (Gemini -> Unity) ---
 [Serializable]
 public class GeminiResponse
 {

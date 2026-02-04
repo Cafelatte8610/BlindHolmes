@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d00deb564e2eebc42a4dbc4f2844fee4, type: 3}
-  m_Name: DeadLine
-  m_EditorClassIdentifier: Assembly-CSharp::BlindHolmes.EvidenceData
-  evidencceID: Deadline
-  displayName: "\u6B7B\u4F53\u8DE1"
-  description: "\u88AB\u5BB3\u8005\u30DC\u30D6\n\u5143\u90F5\u4FBF\u914D\u9054\u54E1\n\u81EA\u5B85\u306E\u6249\u306E\u524D\u3067\u6B7B\u4EA1\u3057\u3066\u3044\u305F\u3088\u3046\u3060\u3002\u5916\u50B7\u306F\u3042\u307E\u308A\u306A\u3044\u3002"
+  m_Name: BobHouse
+  m_EditorClassIdentifier: Assembly-CSharp::EvidenceData
+  evidencceID: Mirror
+  displayName: "\u30DC\u30D6\u306E\u5BB6"
+  description: "\u30DC\u30D6\u306E\u5BB6\n\u7ACB\u6D3E\u306A\u4E00\u8ED2\u5BB6\u3060\n\u5BB6\u65CF\uFF13\u4EBA\u3067\u4F4F\u3093\u3067\u3044\u308B\u307F\u305F\u3044\u3060"
   evidenceImage: {fileID: 0}
   prefabObj: {fileID: 0}

@@ -2,18 +2,8 @@ using UnityEngine;
 
 namespace BlindHolmes.MVP
 {
-    public class HolmesModel : MonoBehaviour
+    public class HolmesModel
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-        
-        }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
     } 
 }

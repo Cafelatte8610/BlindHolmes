@@ -9,6 +9,7 @@ namespace BlindHolmes.MVP
     public class EvidenceView : MonoBehaviour
     {
         [SerializeField] private Image m_evidenceImage;
+        [SerializeField] private TMP_Text m_evidenceName;
         [SerializeField] private TMP_Text m_evidenceDescription;
         [SerializeField] private GameObject m_nonePanel;
         [SerializeField] private CustomButton m_evidenceButton;
@@ -49,7 +50,7 @@ namespace BlindHolmes.MVP
                 m_evidenceImage.gameObject.SetActive(false);
                 m_nonePanel.SetActive(true);
             }
-
+            m_evidenceName.text = evidenceData.displayName;
             m_evidenceDescription.text = evidenceData.description;
         }
 

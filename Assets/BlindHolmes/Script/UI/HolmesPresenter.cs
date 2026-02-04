@@ -33,6 +33,17 @@ namespace BlindHolmes.MVP
                 })
                 .AddTo(_disposables);
         }
+        
+        public void RegisterHolmesSource(Observable<Unit> holmesStream)
+        {
+            holmesStream
+                .Subscribe(_ => 
+                {
+                    _gameManager.OpenUI();
+                    _holmesView.Open();
+                })
+                .AddTo(_disposables);
+        }
 
         public void Dispose()
         {
@@ -46,20 +57,20 @@ namespace BlindHolmes.MVP
 
         private void Bind()
         {
-            // //カウントアップボタンが押されたらModelに通知する
-            // _view.CountupButtonAsObservable
-            //     .Subscribe(_ => _model.CountUp())
-            //     .AddTo(_view);
-            //
-            // //カウントダウンボタンが押されたらModelに通知する
-            // _view.CountDownButtonAsObservable
-            //     .Subscribe(_ => _model.CountDown())
-            //     .AddTo(_view);
-            //
-            // //Modelの値が変化したらViewに通知する
-            // _model.CountAsObservable
-            //     .Subscribe(num => _view.SetNumText(num))
-            //     .AddTo(_disposables);
+
+            _holmesView.CloseHolmesSubject
+                .Subscribe(_ =>
+                {
+                    _gameManager.CloseUI();
+                })
+                .AddTo(_disposables); 
+            
+            _holmesView.CloseButtonAsObservable
+                .Subscribe(_ =>
+                {
+                    _holmesView.Close();
+                })
+                .AddTo(_disposables); 
             
             _evidenceView.CloseButtonAsObservable
                 .Subscribe(_ =>

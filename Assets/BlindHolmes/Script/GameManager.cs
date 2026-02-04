@@ -1,3 +1,4 @@
+using BlindHolmes.MVP;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,18 +17,23 @@ namespace BlindHolmes
         private IInteractable _currentInteractable;
         [SerializeField]
         private PlayerController m_playerController;
+        private bool operateUI = false;
+        [SerializeField]
+        private StartView m_startView;
 
         void Start()
         {
+            operateUI = false;
             Debug.Log ("GameManager: Start");
             m_interactAction = m_playerInput.actions[actionName];
+            OpenUI();
+            m_startView.Open();
         }
 
         void Update()
         {
-            // if (Cursor.lockState != CursorLockMode.Locked) return;
+            if(operateUI) return;
             if (m_interactAction == null) return;
-
             CheckForInteractable();
             CheckInput();
         }
@@ -80,11 +86,13 @@ namespace BlindHolmes
 
         public void OpenUI()
         {
+            operateUI = true;
             m_playerController.OperationUI();
         }
 
         public void CloseUI()
         {
+            operateUI = false;
             m_playerController.ClosedUI();
         }
     }

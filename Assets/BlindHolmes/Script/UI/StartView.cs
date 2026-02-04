@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace BlindHolmes.MVP
 {
-    public class HolmesView : MonoBehaviour
+    public class StartView : MonoBehaviour
     {
         [SerializeField] private GameObject m_ContentPanel;
         [SerializeField] private Image m_assistantImage;
@@ -17,36 +17,12 @@ namespace BlindHolmes.MVP
         [SerializeField] private TMP_Text m_speakerText;
         [SerializeField] private TMP_Text m_talkText;
         [SerializeField] private float m_delayDuration = 0.05f;
-        [SerializeField] private GameObject m_SubmitPanel;
-        [SerializeField] private TMP_InputField m_submitText;
-        [SerializeField] private CustomButton m_submitButton;
-        [SerializeField] private CustomButton m_finButton;
-        [SerializeField] private CustomButton m_closeButton;
-        [SerializeField] private GeminiChat m_geminiChat;
-        [SerializeField] private ResultView m_resultView;
 
-        public readonly Subject<Unit> CloseHolmesSubject = new Subject<Unit>();
 
-        public Observable<Unit> CloseButtonAsObservable
-        {
-            get { return m_closeButton.ClickAsObservable; }
-        }
-
+        [SerializeField] private GameManager m_gameManager;
         private CancellationTokenSource _cts; // 文字送り単位のキャンセル用
         private CancellationTokenSource _talkCts; // 会話全体のキャンセル用
-
-        private void Start()
-        {
-            m_ContentPanel.SetActive(false);
-            m_submitButton.ClickAsObservable.Subscribe(_ =>
-            {
-                SendEvidence();
-            });
-            m_finButton.ClickAsObservable.Subscribe(_ =>
-            {
-                FinDeduce();
-            });
-        }
+        
 
         private void OnDestroy()
         {
@@ -61,7 +37,6 @@ namespace BlindHolmes.MVP
             m_ContentPanel.SetActive(true);
             m_assistantImage.gameObject.SetActive(true);
             m_ditectiveImage.gameObject.SetActive(true);
-            m_SubmitPanel.SetActive(false);
 
             _talkCts?.Cancel();
             _talkCts = new CancellationTokenSource();
@@ -74,54 +49,8 @@ namespace BlindHolmes.MVP
         {
             _talkCts?.Cancel(); // 親をキャンセルすれば、リンクされた子も止まる
             m_ContentPanel.SetActive(false);
-            CloseHolmesSubject.OnNext(Unit.Default);
         }
-
-        private void SendEvidence()
-        {
-            string message = m_submitText.text;
-            if (string.IsNullOrEmpty(message)) return;
-            m_geminiChat.SendMessageToGemini(message, (reply) => 
-            {
-                Debug.Log("探偵の反応: " + reply); 
-            });
-        }
-
-        private void FinDeduce()
-        {
-            m_geminiChat.AccuseCulprit((text, id) =>
-            {
-                string displayText = text.Trim();
-                int lastNewLineIndex = displayText.LastIndexOf('\n');
-                if (lastNewLineIndex > 0)
-                {
-                    string lastLine = displayText.Substring(lastNewLineIndex + 1).Trim();
-                    if (int.TryParse(lastLine, out int _))
-                    {
-                        displayText = displayText.Substring(0, lastNewLineIndex).Trim();
-                    }
-                }
-                
-                Debug.Log("探偵の推理: " + displayText);
-                if (id == 3)
-                {
-                    Debug.Log("【ゲームクリア】正解！犯人はミラーだ！");
-                }
-                else if (id == 1)
-                {
-                    Debug.Log("【ゲームオーバー】冤罪だ！妻を疑ってしまった...");
-                }
-                else if (id == 2)
-                {
-                    Debug.Log("【ゲームオーバー】冤罪だ！息子を疑ってしまった...");
-                }
-                else
-                {
-                    Debug.Log("【失敗】探偵は犯人を絞り込めなかったようだ（情報不足）");
-                }
-                m_resultView.OpenResult(id, displayText);
-            });
-        }
+        
         
         private bool IsClicked()
         {
@@ -134,27 +63,35 @@ namespace BlindHolmes.MVP
             try
             {
                 m_speakerText.text = "探偵";
-                m_SubmitPanel.SetActive(false);
                 m_assistantImage.color = Color.gray;
                 m_ditectiveImage.color = Color.white;
                 
-                await ShowMessageAndWaitClick("なにか発見はあったかな？", token);
+                await ShowMessageAndWaitClick("急に呼び出して悪いね助手君", token);
 
                 m_speakerText.text = "助手";
-                m_submitText.text = "";
-                m_SubmitPanel.SetActive(true);
                 m_assistantImage.color = Color.white;
                 m_ditectiveImage.color = Color.gray;
+                await ShowMessageAndWaitClick("高名な盲目探偵　ブラインドホームズに協力できるならどこへでも行きます！", token);
 
-                await m_submitButton.ClickAsObservable.FirstAsync(token);
-
+                
                 m_speakerText.text = "探偵";
-                m_SubmitPanel.SetActive(false);
                 m_assistantImage.color = Color.gray;
                 m_ditectiveImage.color = Color.white;
 
-                await ShowMessageAndWaitClick("なるほど、それが証拠というわけだね。", token);
-
+                await ShowMessageAndWaitClick("今回の事件は港町オハイオのレンガ通りで起きた事件だ", token);
+                await ShowMessageAndWaitClick("被害者は郵便配達員のボブ、遺体は警察が回収したが遺体があった場所は記してあるので調べてくれたまえ。", token);
+                await ShowMessageAndWaitClick("簡単な警察の調査で犯行推定時刻に証明されたアリバイが無かった３人が今回の事件の容疑者だ。隣人のミラー、被害者の妻のメアリー、被害者の息子のボブだ", token);
+                await ShowMessageAndWaitClick("君はご存じの通り眼が見えない私の代わりに事件現場を調査し、犯人の手がかりになりそうな情報を私に持ってきてくれ。私はここで待っているから何かわかったら話しかけてくれ。", token);
+                await ShowMessageAndWaitClick("左クリックで証拠になりそうなものを細かく見れるのでつかうといい。", token);
+                await ShowMessageAndWaitClick("調査が修了したら私に話して「推理する」のボタンを押してくれ。", token);
+                await ShowMessageAndWaitClick("では私の代わりに調査頼むよ助手君", token);
+                
+                m_speakerText.text = "助手";
+                m_assistantImage.color = Color.white;
+                m_ditectiveImage.color = Color.gray;
+                await ShowMessageAndWaitClick("了解しました！", token);
+                
+                m_gameManager.CloseUI();
                 Close();
             }
             catch (OperationCanceledException)
