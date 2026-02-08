@@ -42,7 +42,7 @@ public class GeminiChat : MonoBehaviour
         // });    
     }
 
-    // --- 1. 外部から情報を送信する関数 ---
+    // Geminiにメッセージを送る
     public void SendMessageToGemini(string userMessage, System.Action<string> callback)
     {
         // ユーザーの入力を履歴に追加
@@ -82,7 +82,6 @@ public class GeminiChat : MonoBehaviour
                     if (int.TryParse(lastLine, out int parsedId))
                     {
                         culpritId = parsedId;
-                        // finalExplanation = reply.Substring(0, reply.LastIndexOf(lastLine)).Trim();
                     }
                 }
             }
@@ -96,7 +95,7 @@ public class GeminiChat : MonoBehaviour
         });
     }
 
-    // --- 通信処理 ---
+    // 通信処理
     IEnumerator PostRequest(System.Action<string> callback)
     {
         string url = $"{apiUrl}?key={apiKey}";
@@ -106,12 +105,11 @@ public class GeminiChat : MonoBehaviour
 
         GeminiRequest requestData = new GeminiRequest
         {
-            // System Instructionで「役割」と「初期情報」をセット
             system_instruction = new SystemInstruction
             {
                 parts = new Part[] { new Part { text = fullSystemPrompt } }
             },
-            // ここまでの会話履歴をすべて送信
+            // 会話履歴をすべて送信
             contents = chatHistory.ToArray()
         };
 
@@ -134,7 +132,7 @@ public class GeminiChat : MonoBehaviour
                 {
                     string reply = response.candidates[0].content.parts[0].text;
 
-                    // AIの返答も履歴に追加（文脈を維持するため）
+                    // AIの返答も履歴に追加
                     chatHistory.Add(new Content
                     {
                         role = "model",
@@ -153,7 +151,6 @@ public class GeminiChat : MonoBehaviour
 
     void LoadApiKey()
     {
-        // ※ファイル名を secrets.json から APIKey.json に統一しました（ご提示コード準拠）
         string path = Path.Combine(Application.streamingAssetsPath, "APIKey.json");
 
         if (File.Exists(path))

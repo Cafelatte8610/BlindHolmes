@@ -32,8 +32,8 @@ namespace BlindHolmes.MVP
             get { return m_closeButton.ClickAsObservable; }
         }
 
-        private CancellationTokenSource _cts; // 文字送り単位のキャンセル用
-        private CancellationTokenSource _talkCts; // 会話全体のキャンセル用
+        private CancellationTokenSource _cts;
+        private CancellationTokenSource _talkCts;
 
         private void Start()
         {
@@ -41,11 +41,11 @@ namespace BlindHolmes.MVP
             m_submitButton.ClickAsObservable.Subscribe(_ =>
             {
                 SendEvidence();
-            });
+            }).AddTo(this);;
             m_finButton.ClickAsObservable.Subscribe(_ =>
             {
                 FinDeduce();
-            });
+            }).AddTo(this);;
         }
 
         private void OnDestroy()
@@ -72,11 +72,12 @@ namespace BlindHolmes.MVP
 
         public void Close()
         {
-            _talkCts?.Cancel(); // 親をキャンセルすれば、リンクされた子も止まる
+            _talkCts?.Cancel();
             m_ContentPanel.SetActive(false);
             CloseHolmesSubject.OnNext(Unit.Default);
         }
 
+        // Geminiにメッセージを送る
         private void SendEvidence()
         {
             string message = m_submitText.text;
@@ -87,6 +88,7 @@ namespace BlindHolmes.MVP
             });
         }
 
+        // 推理の結果
         private void FinDeduce()
         {
             m_geminiChat.AccuseCulprit((text, id) =>
@@ -129,6 +131,7 @@ namespace BlindHolmes.MVP
             return false;
         }
 
+        // 会話のAsync
         private async UniTask TalkEvidenceAsync(CancellationToken token)
         {
             try

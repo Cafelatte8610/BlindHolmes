@@ -17,6 +17,7 @@ namespace BlindHolmes
             _outline = GetComponent<Outline>();
         }
 
+        // LTSにInjectionする
         private void Start()
         {
             if (_presenter != null)

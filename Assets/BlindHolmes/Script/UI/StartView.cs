@@ -20,9 +20,8 @@ namespace BlindHolmes.MVP
 
 
         [SerializeField] private GameManager m_gameManager;
-        private CancellationTokenSource _cts; // 文字送り単位のキャンセル用
-        private CancellationTokenSource _talkCts; // 会話全体のキャンセル用
-        
+        private CancellationTokenSource _cts;
+        private CancellationTokenSource _talkCts;
 
         private void OnDestroy()
         {
@@ -47,7 +46,7 @@ namespace BlindHolmes.MVP
 
         public void Close()
         {
-            _talkCts?.Cancel(); // 親をキャンセルすれば、リンクされた子も止まる
+            _talkCts?.Cancel();
             m_ContentPanel.SetActive(false);
         }
         
@@ -58,6 +57,7 @@ namespace BlindHolmes.MVP
             return false;
         }
 
+        // 会話のAsync
         private async UniTask TalkEvidenceAsync(CancellationToken token)
         {
             try

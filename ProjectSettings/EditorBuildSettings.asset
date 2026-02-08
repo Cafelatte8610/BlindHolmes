@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/BlindHolmes/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/BlindHolmes/Scenes/Title.unity
+    guid: ccdb8be23900ed748b277113353e4969
+  - enabled: 1
     path: Assets/BlindHolmes/Scenes/Stage1.unity
     guid: f0f1a59002943b94cbc1ec8ee3181842
   m_configObjects:

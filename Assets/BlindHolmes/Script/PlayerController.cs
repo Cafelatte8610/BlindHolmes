@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Input System必須
+using UnityEngine.InputSystem;
 
 namespace BlindHolmes
 {

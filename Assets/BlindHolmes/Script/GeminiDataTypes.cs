@@ -3,7 +3,7 @@ using System;
 [Serializable]
 public class GeminiRequest
 {
-    public SystemInstruction system_instruction; // 追加: キャラ設定・容疑者情報用
+    public SystemInstruction system_instruction; // キャラ設定・容疑者情報
     public Content[] contents;
 }
 

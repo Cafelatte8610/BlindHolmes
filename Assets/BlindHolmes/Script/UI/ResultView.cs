@@ -16,6 +16,7 @@ public class ResultView : MonoBehaviour
     [SerializeField] private TMP_Text m_deduceText;
     [SerializeField] private TMP_Text m_resultText;
     [SerializeField] private CustomButton m_rePlayButton;
+    [SerializeField] private CustomButton m_BackTitleButton;
 
     private void Start()
     {
@@ -23,7 +24,12 @@ public class ResultView : MonoBehaviour
             .Subscribe(_ =>
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            });
+            }).AddTo(this);
+        m_BackTitleButton.ClickAsObservable
+            .Subscribe(_ =>
+            {
+                BackTitle();
+            }).AddTo(this);
         m_ContentPanel.SetActive(false);
     }
 
@@ -55,5 +61,10 @@ public class ResultView : MonoBehaviour
                 break;  
         }
         m_deduceText.text = deduce;
+    }
+
+    private void BackTitle()
+    {
+        SceneManager.LoadScene("Title");
     }
 }

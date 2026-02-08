@@ -38,6 +38,7 @@ namespace BlindHolmes
             CheckInput();
         }
 
+        // インタラクトできるオブジェクトかチェック
         private void CheckForInteractable()
         {
             Ray ray = new Ray(cameraRoot.position, cameraRoot.forward);
